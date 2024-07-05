@@ -40,16 +40,7 @@ namespace H4_engine
 			return component;
 		}
 
-		void* add_component(std::string const &n)
-        {
-            auto iter = component_factory.m_components.find(n);
-            if (iter == component_factory.m_components.end())
-            {
-                LOG_ERROR("Couldn't construct component with name {0}: no map entry", n);
-                return 0;
-            }
-            return iter->second(this);
-        }
+		Component* add_component(std::string n);
 
 		void process_new_components();
 		void tick();

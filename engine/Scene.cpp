@@ -10,4 +10,12 @@ namespace H4_engine
 	{
 		m_objects.push_back(obj);
 	}
+	void Scene::purge()
+	{
+		for (Entity *ent : m_objects)
+		{
+			delete ent;
+		}
+		m_objects.clear();
+	}
 }

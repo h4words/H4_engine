@@ -27,6 +27,9 @@ namespace H4_engine
 
 		m_scene = new Scene();
 
+		m_mapLoader = new MapLoader();
+		m_mapLoader->load("resources/testmap.map", m_scene);
+
 		Entity *entcam = new Entity();
 		Transform* enttr = entcam->add_component<Transform>();
 		enttr->set_position({0, 10, 0});
@@ -36,11 +39,6 @@ namespace H4_engine
 		CameraController* cameracont = entcam->add_component<CameraController>();
         m_scene->add_object(entcam);
 		m_renderer->set_camera(camera);
-
-		Entity *ent1 = new Entity();
-		ent1->add_component<Transform>();
-		((Model*)ent1->add_component("Model"))->set_model("resources/placeholder_house.obj");
-        m_scene->add_object(ent1);
 
 		Entity *ent2 = new Entity();
 		ent2->add_component<Transform>()->set_position(glm::vec3(-2, 4, 0));

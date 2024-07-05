@@ -6,6 +6,7 @@
 #include <renderer/Renderer.hpp>
 #include <renderer/Window.hpp>
 #include <audio/AudioSystem.hpp>
+#include <map/MapLoader.hpp>
 
 #define TICK_RATE 64
 
@@ -24,6 +25,7 @@ namespace H4_engine
 			Renderer* m_renderer;
 			Scene* m_scene;
 			AudioSystem* m_audioSystem;
+			MapLoader* m_mapLoader;
 		
 			Font *font;
 			UI_Image *img;

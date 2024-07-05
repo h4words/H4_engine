@@ -16,6 +16,11 @@ namespace H4_engine
 		ShaderDataType::Float2,
 		ShaderDataType::Float3
 	};
+
+	BEGIN_DATADESC(Model)
+		DEFINE_FIELD(FIELD_STRING, m_model_path),
+	END_DATADESC()
+
 	Model::Model(Entity *entity)
 		: Component(entity)
 	{
@@ -62,6 +67,12 @@ namespace H4_engine
 		vao->add_buffer(*mesh_vbo);
 		meshVAO.set_vertices_count(vertices.size());
 		return meshVAO;
+	}
+	void Model::start()
+	{
+		if (!m_model_path.empty()) {
+			set_model(m_model_path);
+		}
 	}
 	void Model::set_model(std::string path) 
 	{

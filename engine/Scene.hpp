@@ -10,6 +10,7 @@ namespace H4_engine
 		public:
 			std::vector<Entity*> get_objects();
 			void add_object(Entity* obj);
+			void purge();
 		private:
 			std::vector<Entity*> m_objects;
 	};

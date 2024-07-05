@@ -14,19 +14,18 @@ namespace H4_engine
         return (void*)new T(entity);
     }
     
-    struct ComponentFactory
+    class ComponentFactory
     {
-        typedef void* (*constructor_t)(Entity*);
-        std::map<std::string, constructor_t> m_components;
-
-        template <class T>
-        void register_class(std::string const &n)
-        {
-            m_components.insert(std::make_pair(n, &constructor<T>));
-        }
+        public:
+            typedef void* (*constructor_t)(Entity*);
+            std::unordered_map<std::string, constructor_t> m_components;
+            static ComponentFactory& get();
+            template <class T>
+            void register_class(std::string n)
+            {
+                m_components.insert(std::make_pair(n, &constructor<T>));
+            }
     };
-
-    static ComponentFactory component_factory;
 
     //2 weeks triumph - seems to understand source engine code now
     #define REGISTER_COMPONENT(n)                           \
@@ -35,7 +34,7 @@ namespace H4_engine
         public:                                             \
             n##Factory()                                    \
             {                                               \
-                component_factory.register_class<n>(#n);    \
+                ComponentFactory::get().register_class<n>(#n);    \
             }                                               \
         };                                                  \
         static n##Factory n##FactoryFoo;
