@@ -2,9 +2,16 @@
 #include <Common.hpp>
 #include <Log.hpp>
 #include <components/Transform.hpp>
-
+#include <Application.hpp>
 namespace H4_engine
 {
+	BEGIN_DATADESC(Light)
+		DEFINE_FIELD(FIELD_COLOR, m_color)
+	END_DATADESC()
+	void Light::start()
+	{
+		Application::get_instance()->get_renderer()->add_light(this);
+	}
 	/*DirectionalLight::DirectionalLight(Entity *entity, glm::vec3 clq, glm::vec3 color)
 		: Light(entity)
 	{
@@ -21,6 +28,10 @@ namespace H4_engine
 	{
 
 	}*/
+
+	BEGIN_DATADESC_BASE(PointLight, Light)
+		DEFINE_FIELD(FIELD_VECTOR, m_clq)
+	END_DATADESC()
 
 	PointLight::PointLight(Entity *entity)
 		: Light(entity)

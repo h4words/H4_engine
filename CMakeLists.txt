@@ -4,6 +4,7 @@ project (H4_engine)
 
 set (GAME_EXECUTABLE_NAME "game")
 set (DEDICATED_SERVER_EXECUTABLE_NAME "dedicated_server")
+set (MAP_EDITOR_EXECUTABLE_NAME "map_editor")
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -13,11 +14,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-offsetof")
 include_directories(${CMAKE_SOURCE_DIR}/engine)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/engine/*.cpp)
 
+find_package(SDL2 REQUIRED)
+find_package(Freetype REQUIRED)
+
 add_subdirectory(external/spdlog ${CMAKE_CURRENT_BINARY_DIR}/spdlog)
 add_subdirectory(external/glad ${CMAKE_CURRENT_BINARY_DIR}/glad)
 add_subdirectory(external/glm ${CMAKE_CURRENT_BINARY_DIR}/glm)
 add_subdirectory(external/assimp ${CMAKE_CURRENT_BINARY_DIR}/assimp)
 add_subdirectory(external/stb_image ${CMAKE_CURRENT_BINARY_DIR}/stb_image)
+add_subdirectory(external/imgui ${CMAKE_CURRENT_BINARY_DIR}/imgui)
 
 set(FMOD_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/external/fmod/inc")
 set(FMOD_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/external/fmod/lib/fmod.dll")
@@ -33,8 +38,6 @@ add_executable(${GAME_EXECUTABLE_NAME} ${SOURCES})
 
 add_dependencies(${GAME_EXECUTABLE_NAME} copy_resources)
 
-find_package(SDL2 REQUIRED)
-find_package(Freetype REQUIRED)
 target_include_directories(${GAME_EXECUTABLE_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${FMOD_INCLUDE_DIRS})
 
 target_link_libraries(${GAME_EXECUTABLE_NAME} PUBLIC ${SDL2_LIBRARIES} ${FREETYPE_LIBRARIES} ${FMOD_LIBRARIES} spdlog glad glm stb_image assimp) 
@@ -43,6 +46,24 @@ target_include_directories(${GAME_EXECUTABLE_NAME} PUBLIC "${PROJECT_BINARY_DIR}
 
 add_custom_command(TARGET ${GAME_EXECUTABLE_NAME} POST_BUILD
   COMMAND "${CMAKE_COMMAND}" -E copy -t "$<TARGET_FILE_DIR:${GAME_EXECUTABLE_NAME}>" "$<TARGET_RUNTIME_DLLS:${GAME_EXECUTABLE_NAME}>" 
+  COMMAND_EXPAND_LISTS
+)
+
+### MAP EDITOR
+add_executable(${MAP_EDITOR_EXECUTABLE_NAME} ${SOURCES})
+target_compile_definitions(${MAP_EDITOR_EXECUTABLE_NAME} PRIVATE MAP_EDITOR=1)
+target_compile_definitions(${MAP_EDITOR_EXECUTABLE_NAME} PRIVATE IMGUI_AVAILABLE=1)
+
+add_dependencies(${MAP_EDITOR_EXECUTABLE_NAME} copy_resources)
+
+target_include_directories(${MAP_EDITOR_EXECUTABLE_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${FREETYPE_INCLUDE_DIRS} ${FMOD_INCLUDE_DIRS})
+
+target_link_libraries(${MAP_EDITOR_EXECUTABLE_NAME} PUBLIC ${SDL2_LIBRARIES} ${FREETYPE_LIBRARIES} ${FMOD_LIBRARIES} spdlog glad glm stb_image assimp imgui) 
+target_include_directories(${MAP_EDITOR_EXECUTABLE_NAME} PRIVATE ${MAP_EDITOR_EXECUTABLE_NAME})
+target_include_directories(${MAP_EDITOR_EXECUTABLE_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_custom_command(TARGET ${MAP_EDITOR_EXECUTABLE_NAME} POST_BUILD
+  COMMAND "${CMAKE_COMMAND}" -E copy -t "$<TARGET_FILE_DIR:${MAP_EDITOR_EXECUTABLE_NAME}>" "$<TARGET_RUNTIME_DLLS:${MAP_EDITOR_EXECUTABLE_NAME}>" 
   COMMAND_EXPAND_LISTS
 )
 

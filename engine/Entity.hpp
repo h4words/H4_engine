@@ -42,6 +42,13 @@ namespace H4_engine
 
 		Component* add_component(std::string n);
 
+		std::vector<Component*> get_all_components()
+		{
+			return m_components;
+		}
+
+		void delete_component(Component *comp);
+
 		void process_new_components();
 		void tick();
 	private:

@@ -2,6 +2,6 @@
 
 namespace H4_engine
 {
-    BEGIN_DATADESC(Component)
+    BEGIN_DATADESC_NOBASE(Component)
 	END_DATADESC();
 }

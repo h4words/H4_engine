@@ -3,6 +3,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
+#include <Application.hpp>
 
 namespace H4_engine {
     Camera::Camera(Entity *entity)
@@ -11,6 +12,9 @@ namespace H4_engine {
     void Camera::start()
     {
         m_transform = m_entity->get_component<Transform>();
+        Application::get_instance()->get_renderer()->set_camera(this);
+        set_width(Application::get_instance()->get_window()->get_width());
+        set_height(Application::get_instance()->get_window()->get_height());
         m_transform->add_position_callback([&](glm::vec3 old, glm::vec3 now)
         {
             m_update_view_matrix = true;

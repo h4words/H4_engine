@@ -51,7 +51,7 @@ namespace H4_engine
 			Shader *m_ui_shader;
 			Shader *m_depth_shader;
 
-            Camera *m_camera;
+            Camera *m_camera = nullptr;
 
 			Skybox *m_skybox;
 

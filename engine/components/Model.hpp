@@ -19,6 +19,7 @@ namespace H4_engine
 	class Model : public Component
 	{
 		public:
+			DECLARE_COMPONENT(Model);
 			DECLARE_DATADESC();       
 			Model(Entity *entity);
 			void start();

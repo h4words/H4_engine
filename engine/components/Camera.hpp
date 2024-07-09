@@ -8,6 +8,7 @@ namespace H4_engine {
     class Camera : public Component
     {
         public:
+            DECLARE_COMPONENT(Camera);
             Camera(Entity *entity);
 
             void start();

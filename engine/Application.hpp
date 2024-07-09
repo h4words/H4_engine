@@ -6,7 +6,7 @@
 #include <renderer/Renderer.hpp>
 #include <renderer/Window.hpp>
 #include <audio/AudioSystem.hpp>
-#include <map/MapLoader.hpp>
+#include <map/MapUtils.hpp>
 
 #define TICK_RATE 64
 
@@ -20,6 +20,7 @@ namespace H4_engine
 			static Application* get_instance() { return instance; };
 			Window* get_window() { return m_Window; };
 			AudioSystem* get_audioSystem() { return m_audioSystem; };
+			Renderer* get_renderer() { return m_renderer; };
 		private:
 			Window* m_Window;
 			Renderer* m_renderer;

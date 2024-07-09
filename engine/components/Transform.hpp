@@ -10,6 +10,8 @@ namespace H4_engine
 	class Transform : public Component
 	{
 		public:
+            DECLARE_COMPONENT(Transform);
+            DECLARE_DATADESC();
 			Transform(Entity *entity)
                     : Component(entity) { };
 

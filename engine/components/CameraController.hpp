@@ -14,6 +14,7 @@ namespace H4_engine
 	class CameraController : public Component
 	{
 		public:
+			DECLARE_COMPONENT(CameraController);
 			CameraController(Entity *entity);
 			void start();
 			void tick();

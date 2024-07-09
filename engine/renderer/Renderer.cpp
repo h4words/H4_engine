@@ -35,6 +35,7 @@ namespace H4_engine {
 
     void Renderer::resize(int width, int height)
     {
+        if (!m_camera) return;
         m_camera->set_width(width);
         m_camera->set_height(height);
     }
@@ -55,9 +56,7 @@ namespace H4_engine {
 
         m_depthCubemaps->unbind_framebuffer();
 
-        glViewport(0, 0, m_window->get_width(), m_window->get_height());
-        glClearColor(0, 0, 0, 0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        m_window->clear();
 
         glm::mat4 view_projection_matrix = m_camera->get_projection_matrix() * m_camera->get_view_matrix();
         m_shader->bind();

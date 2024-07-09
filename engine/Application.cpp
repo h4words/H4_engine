@@ -11,7 +11,7 @@ namespace H4_engine
 	int Application::start(unsigned int window_width, unsigned int window_height, std::string title)
 	{
 		instance = this;
-		m_Window = new Window(title, window_width, window_height);
+		m_Window = new Window(title, window_width, window_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
 		LOG_INFO("Window {0} is initialized.", title);
 		m_renderer = new Renderer(m_Window);
 		m_renderer->set_skybox(new Skybox(new Cubemap({ "resources/NissiBeach2/posx.jpg"
@@ -28,44 +28,11 @@ namespace H4_engine
 		m_scene = new Scene();
 
 		m_mapLoader = new MapLoader();
-		m_mapLoader->load("resources/testmap.map", m_scene);
+		m_mapLoader->load("resources/test3.map");
+		m_mapLoader->push_to_scene(m_scene);
 
-		Entity *entcam = new Entity();
-		Transform* enttr = entcam->add_component<Transform>();
-		enttr->set_position({0, 10, 0});
-		Camera *camera = entcam->add_component<Camera>();
-		camera->set_width(window_width);
-		camera->set_height(window_height);
-		CameraController* cameracont = entcam->add_component<CameraController>();
-        m_scene->add_object(entcam);
-		m_renderer->set_camera(camera);
-
-		Entity *ent2 = new Entity();
-		ent2->add_component<Transform>()->set_position(glm::vec3(-2, 4, 0));
-		ent2->add_component<Model>()->set_model("resources/cube-tex.obj");
-        m_scene->add_object(ent2);
-
-		Entity *entsound = new Entity();
-		entsound->add_component<Transform>()->set_position(glm::vec3(-2, 4, 0));
-		entsound->add_component<AudioSource>()->init("resources/sounds/corridor.wav", false, false, true);
-        m_scene->add_object(entsound);
-
-        font = new Font("resources/arial.ttf", 48);
+		font = new Font("resources/arial.ttf", 48);
         img = new UI_Image(Texture2D::blank, 0, 0, 10, 10);
-
-		Entity *ent3 = new Entity();
-		ent3->add_component<Transform>()->set_position({0, 5, 0});
-		PointLight *l3 = ent3->add_component<PointLight>();
-		l3->set_clq({0.f, 0.2f, 0.4f});
-		m_scene->add_object(ent3);
-        m_renderer->add_light(l3);
-
-		Entity *ent4 = new Entity();
-		ent4->add_component<Transform>()->set_position({-2, 5, 2});
-		PointLight *l4 = ent4->add_component<PointLight>();
-		l4->set_clq({0.f, 0.2f, 0.4f});
-		m_scene->add_object(ent4);
-        m_renderer->add_light(l4);
 
 		ui_view_projection_matrix = glm::ortho(0.0f, static_cast<float>(window_width), 0.f, static_cast<float>(window_height), -1.f, 1.f); 
 

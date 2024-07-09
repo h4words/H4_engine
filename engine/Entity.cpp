@@ -18,7 +18,7 @@ namespace H4_engine
             m_first_frame_components.pop();
         }
     }
-    Component* Entity::add_component(std::string n)
+    Component *Entity::add_component(std::string n)
     {
         auto iter = ComponentFactory::get().m_components.find(n);
         if (iter == ComponentFactory::get().m_components.end())
@@ -30,5 +30,18 @@ namespace H4_engine
         m_components.push_back(comp);
         m_first_frame_components.push(comp);
         return comp;
+    }
+
+    void Entity::delete_component(Component *comp)
+    {
+        for (auto it = m_components.begin(); it != m_components.end(); it++)
+        {
+            if (*it == comp)
+            {
+                m_components.erase(it);
+                delete comp;
+                return;
+            }
+        }
     }
 }

@@ -1,4 +1,3 @@
-
 #include <renderer/Window.hpp>
 #include <components/Model.hpp>
 #include "renderer/Shader.hpp"
@@ -17,8 +16,9 @@
 
 namespace H4_engine {
 
-    Window::Window(std::string title, int width, int height)
+    Window::Window(std::string title, int width, int height, int flags)
     	: m_data({ std::move(title), width, height })
+        , m_flags(flags)
     {
     	LOG_INFO("Constructing window '{0}' with size {1}x{2}", m_data.title, m_data.width, m_data.height);
         int resultCode = init();
@@ -37,7 +37,7 @@ namespace H4_engine {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
     	LOG_INFO("Creating window '{0}' with size {1}x{2}", m_data.title, m_data.width, m_data.height);
-        m_pWindow = SDL_CreateWindow(m_data.title.c_str(), m_data.width * 0.5, m_data.height * 0.2, m_data.width, m_data.height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
+        m_pWindow = SDL_CreateWindow(m_data.title.c_str(), m_data.width * 0.5, m_data.height * 0.2, m_data.width, m_data.height, SDL_WINDOW_OPENGL | m_flags);
         m_pGLcontext = SDL_GL_CreateContext(m_pWindow);
         
         if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
@@ -45,6 +45,16 @@ namespace H4_engine {
             LOG_CRITICAL("Failed to initialize GLAD");
             return -3;
         }
+
+    #ifdef IMGUI_AVAILABLE
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+        ImGui_ImplSDL2_InitForOpenGL(m_pWindow, m_pGLcontext);
+        ImGui_ImplOpenGL3_Init();
+    #endif
 
         stbi_set_flip_vertically_on_load(true);
 
@@ -67,6 +77,9 @@ namespace H4_engine {
         Input::ScrollMouse(0);
         while( SDL_PollEvent( &event ) )
         {
+        #ifdef IMGUI_AVAILABLE
+            ImGui_ImplSDL2_ProcessEvent(&event);
+        #endif
             switch( event.type ){
                 case SDL_KEYDOWN:
                 {
