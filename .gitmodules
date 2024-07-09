@@ -1,0 +1,15 @@
+[submodule "external/pugixml"]
+	path = external/pugixml
+	url = https://github.com/zeux/pugixml.git
+[submodule "external/imgui/imgui"]
+	path = external/imgui/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "external/spdlog"]
+	path = external/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "external/glm"]
+	path = external/glm
+	url = https://github.com/g-truc/glm
+[submodule "external/assimp"]
+	path = external/assimp
+	url = https://github.com/assimp/assimp
