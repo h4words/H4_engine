@@ -1,5 +1,5 @@
 # H4_engine
-This is the engine I'm creating for my zombie survival game
+This is the engine I'm creating for my zombie survival game. 
 The game will be relatively simple graphically, but it will require certain features that ready-made engines cannot provide, primarily modding
 ## How to build
 1. install msys2
